@@ -13,3 +13,9 @@
 
 # Ignore the .vscode folder
 .vscode
+
+# Ignore the build folder
+build
+
+# Ignore the .idea folder
+.idea
