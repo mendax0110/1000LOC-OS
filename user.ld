@@ -2,7 +2,7 @@ ENTRY(start)
 
 SECTIONS
 {
-    . = 0x10000000;
+    . = 0x1000000;
 
     .text :
     {
@@ -23,10 +23,10 @@ SECTIONS
     .bss : ALIGN(4)
     {
         *(.bss .bss.* .sbss .sbss.*);
-        . = ALIGN(4);
+        . = ALIGN(16);
         . += 64 * 1024; /* 64 KB */
         __stack_top = .;
 
-        ASSERT(. < 0x18000000, "too large executable, stack overflow");
+        ASSERT(. < 0x1800000, "too large executable, stack overflow");
     }
 }

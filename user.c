@@ -10,7 +10,7 @@ int syscall(int sysno, int arg0, int arg1, int arg2)
     register int a3 __asm__("a3") = sysno;
 
     __asm__ __volatile__("ecall"
-                         : "+r"(a0)
+                         : "=r"(a0)
                          : "r"(a0), "r"(a1), "r"(a2), "r"(a3)
                          : "memory");
 
@@ -45,7 +45,7 @@ __attribute__((noreturn)) void exit(void)
 
 __attribute__((section(".text.start")))
 __attribute__((naked))
-void strart(void)
+void start(void)
 {
     __asm__ __volatile__(
         "mv sp, %[stack_top]\n"

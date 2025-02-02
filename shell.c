@@ -6,7 +6,7 @@ void main(void)
     {
         prompt:
 
-        printf("shell> ");
+        printf("mendax:~$ ");
         char cmdline[128];
         
         for (int i = 0; ; i++)
