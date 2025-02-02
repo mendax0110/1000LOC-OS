@@ -14,3 +14,7 @@ int getchar(void);
 int readfile(const char *filename, char *buf, int len);
 int writefile(const char *filename, const char *buf, int len);
 __attribute__((noreturn)) void exit(void);
+
+int list_files(void);
+void clear_screen(void);
+int exec(const char *program);

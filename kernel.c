@@ -516,6 +516,25 @@ void yield(void)
     switch_context(&prev->sp, &next->sp);
 }
 
+struct file *fs_first_file(void) {
+    for (int i = 0; i < FILES_MAX; i++) {
+        if (files[i].in_use) {
+            return &files[i];
+        }
+    }
+    return NULL;
+}
+
+void process_exec(struct file *file)
+{
+    if (current_proc->pid <= 0)
+        PANIC("invalid process pid=%d", current_proc->pid);
+
+    current_proc->state = PROC_UNUSED;
+    current_proc = create_process(file->data, file->size);
+    yield();
+}
+
 void handle_syscall(struct trap_frame *f)
 {
     switch (f->a3)
@@ -572,6 +591,33 @@ void handle_syscall(struct trap_frame *f)
             f->a0 = len;
             break;
         }
+        case SYS_LIST_FILES:
+        {
+            struct file *file = fs_first_file();
+            while (file)
+            {
+                printf("%s\n", file->name);
+                file = file->next;
+            }
+        }
+            break;
+        case SYS_CLEAR_SCREEN:
+            printf("\033[2J\033[H");
+            break;
+        case SYS_EXEC:
+        {
+            const char *program = (const char *) f->a0;
+            struct file *file = fs_lookup(program);
+            if (!file)
+            {
+                printf("file not found: %s\n", program);
+                return;
+            }
+
+            printf("Executing %s...\n", program);
+            process_exec(file);
+        }
+            break;
         default:
             PANIC("unexpected syscall a3=%x\n", f->a3);
     }

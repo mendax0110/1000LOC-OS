@@ -172,8 +172,15 @@ struct file
     char name[100];
     char data[1024];
     size_t size;
+    struct file *next;
 };
 
+extern struct file files[FILES_MAX];
+
+struct file *fs_first_file(void);
+struct file *fs_lookup(const char *filename);
+
+void process_exec(struct file *file);
 
 #define READ_CSR(reg)                                                           \
     ({                                                                          \

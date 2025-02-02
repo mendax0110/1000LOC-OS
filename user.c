@@ -37,6 +37,21 @@ int writefile(const char *filename, const char *buf, int len)
     return syscall(SYS_WRITEFILE, (int) filename, (int) buf, len);
 }
 
+int list_files(void)
+{
+    return syscall(SYS_LIST_FILES, 0, 0, 0);
+}
+
+void clear_screen(void)
+{
+    syscall(SYS_CLEAR_SCREEN, 0, 0, 0);
+}
+
+int exec(const char *program)
+{
+    return syscall(SYS_EXEC, (int) program, 0, 0);
+}
+
 __attribute__((noreturn)) void exit(void)
 {
     syscall(SYS_EXIT, 0, 0, 0);
